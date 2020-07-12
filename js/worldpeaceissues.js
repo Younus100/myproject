@@ -3,7 +3,16 @@
 // Copyright (C) Coursera 2020
 
 // Your web app's Firebase configuration
-// REPLACE THIS WITH YOUR CONFIG
+  var firebaseConfig = {
+    apiKey: "AIzaSyCgtqtRUmrdm80HPJXNqsjrkBd3BiyqXJ4",
+    authDomain: "syed-world-peace.firebaseapp.com",
+    databaseURL: "https://syed-world-peace.firebaseio.com",
+    projectId: "syed-world-peace",
+    storageBucket: "syed-world-peace.appspot.com",
+    messagingSenderId: "669616038452",
+    appId: "1:669616038452:web:d14a32fe573df24ffe2061",
+    measurementId: "G-FNVPNNTH4N"
+  };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -26,10 +35,18 @@ rootRef.on("value",
 
     snapshot.forEach((child) => {
       issue = child.val();
-      console.log(issue);
-      // var row = document.createElement("tr");
-      // row.innerHTML = "<td>" + issue.severity + "</td><td>" + encodeHtml("[REPLACE THIS]") + "</td><td>" + "[REPLACE THIS]" + "</td>";
-      // listTableBody.append(row);
+      //console.log(issue);
+      var row = document.createElement("tr");
+      row.innerHTML = "<td>" + issue.severity + "</td><td>" + issue.description + "</td><td>" +
+
+        "<select onchange='updateIssue(\"" + child.key + "\", this.value)'>" +
+        "<option value='no'" + (issue.resolved=="no" ? " selected" : "") + ">no</option>" +
+        "<option value='yes'" + (issue.resolved=="yes" ? " selected" : "") + ">yes</option>" +
+      "</select>"
+
+      + "</td>" + "<td><input type='button' class='btn btn-danger' value='X' onclick='deleteIssue(\"" + child.key + "\")'/></td>";
+;
+      listTableBody.append(row);
     });
 
   },
@@ -52,7 +69,11 @@ function addNewIssue() {
     return;
   }
 
-  // Add code to insert into firebase here
+  rootRef.push ({
+    description: description,
+    resolved: resolved ,
+    severity: severity
+  });
 
   document.getElementById("description-textfield").value="";
 }
@@ -60,14 +81,22 @@ function addNewIssue() {
 // Task 6 ------------------------------------------
 
 function updateIssue(issueKey, newResolvedValue) {
-  alert("update function for issue key: " + issueKey + "newResolveValue: " + newResolvedValue);
-}
+  var recordRef = firebase.database().ref("issues/" + issueKey);
+
+  recordRef.update ({
+     "resolved": newResolvedValue
+  });}
 
 // Task 7 ------------------------------------------
 
 function deleteIssue(issueKey) {
   if (confirm("Are you sure?")) {
-    alert("delete function for issue key: " + issueKey);
+    var recordRef = firebase.database().ref("issues/" + issueKey);
+
+    recordRef.remove()
+       .catch(function(error) {
+         alert("Delete failed: " + error.message)
+       });
   }
 }
 

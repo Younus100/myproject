@@ -3,11 +3,23 @@
 // Copyright (C) Coursera 2020
 
 // Your web app's Firebase configuration
-// REPLACE THIS WITH YOUR CONFIG
-
+// Your web app's Firebase configuration
+// Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCgtqtRUmrdm80HPJXNqsjrkBd3BiyqXJ4",
+    authDomain: "syed-world-peace.firebaseapp.com",
+    databaseURL: "https://syed-world-peace.firebaseio.com",
+    projectId: "syed-world-peace",
+    storageBucket: "syed-world-peace.appspot.com",
+    messagingSenderId: "669616038452",
+    appId: "1:669616038452:web:d14a32fe573df24ffe2061",
+    measurementId: "G-FNVPNNTH4N"
+  };
 // Initialize Firebase
-// firebase.initializeApp(firebaseConfig);
-// firebase.analytics();
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
+
+const rootRef = firebase.database().ref("issues/");
 
 // Paste the web app's configuration above this line
 // Our code starts below
